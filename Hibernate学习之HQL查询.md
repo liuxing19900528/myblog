@@ -104,7 +104,7 @@ $ cat /home/mamh/.m2/repository/com/oracle/ojdbc8/12/ojdbc8-12.pom              
 这里我们给出一个测试使用的数据库表，包含数据的
 
 
-|#|EMPLOYEE_ID|FIRST_NAME|LAST_NAME|EMAIL|PHONE_NUMBER|HIRE_DATE|JOB_ID|SALARY|COMMISSION_PCT|MANAGER_ID|DEPARTMENT_ID|
+|EMPLOYEE表格#|EMPLOYEE_ID|FIRST_NAME|LAST_NAME|EMAIL|PHONE_NUMBER|HIRE_DATE|JOB_ID|SALARY|COMMISSION_PCT|MANAGER_ID|DEPARTMENT_ID|
 |-|-|-|-|-|-|-|-|-|-|-|-|
 |1|100|Steven|King|SKING|515.123.4567|1987-06-17 00:00:00|AD_PRES|24000.00|NULL|NULL|90|
 |2|101|Neena|Kochhar|NKOCHHAR|515.123.4568|1989-09-21 00:00:00|AD_VP|17000.00|NULL|100|90|
@@ -218,8 +218,8 @@ $ cat /home/mamh/.m2/repository/com/oracle/ojdbc8/12/ojdbc8-12.pom              
 ----------
 
 
-DEPARTMENT表格
-|#|DEPARTMENT_ID|DEPARTMENT_NAME|MANAGER_ID|LOCATION_ID|
+
+|DEPARTMENT表格|DEPARTMENT_ID|DEPARTMENT_NAME|MANAGER_ID|LOCATION_ID|
 |-|-|-|-|-|
 |1|10|Administration|200|1700|
 |2|20|Marketing|201|1800|
@@ -3531,7 +3531,13 @@ Hibernate:
 ----------
 
 
+
 分页查询
+setFirstResult(int firstResult)设定从哪一个对象开始检索，参数  firstResult 表示这个对象在查询结果中的索引位置，
+索引位置的起始值是0，默认情况下query从查询结果中的第一个对象开始检索。
+
+setMaxResult(int maxResult)设定一次最多检索出的对象数目，在默认情况下，query和criteria接口检索出查询结果中所有的对象
+
 
 ```
 
@@ -3557,16 +3563,11 @@ Hibernate:
     select
         * 
     from
-        ( select
-            row_.*,
-            rownum rownum_ 
+        ( select row_.*, rownum rownum_ 
         from
-            ( select
-                employee0_.id as id1_,
-                employee0_.name as name1_,
-                employee0_.salary as salary1_,
-                employee0_.email as email1_,
-                employee0_.dept_id as dept5_1_ 
+            ( select  employee0_.id as id1_, employee0_.name as name1_,
+             employee0_.salary as salary1_, employee0_.email as email1_, 
+             employee0_.dept_id as dept5_1_ 
             from
                 hb_employee employee0_ ) row_ 
         where
@@ -3576,27 +3577,598 @@ Hibernate:
         rownum_ > ?
 Hibernate: 
     select
-        department0_.id as id0_0_,
-        department0_.name as name0_0_ 
+        department0_.id as id0_0_, department0_.name as name0_0_ 
     from
         hb_department department0_ 
     where
         department0_.id=?
 Hibernate: 
     select
-        department0_.id as id0_0_,
-        department0_.name as name0_0_ 
+        department0_.id as id0_0_,department0_.name as name0_0_ 
     from
         hb_department department0_ 
     where
         department0_.id=?
+        
 [Employee{id=110, name='Chen', salary=8200.0, email='JCHEN', dept=Department{id='100', name='Finance'}}
 , Employee{id=111, name='Sciarra', salary=7700.0, email='ISCIARRA', dept=Department{id='100', name='Finance'}}
 , Employee{id=112, name='Urman', salary=7800.0, email='JMURMAN', dept=Department{id='100', name='Finance'}}
 , Employee{id=113, name='Popp', salary=6900.0, email='LPOPP', dept=Department{id='100', name='Finance'}}
 , Employee{id=114, name='Raphaely', salary=11000.0, email='DRAPHEAL', dept=Department{id='30', name='Purchasing'}}
 ]
-=destroy=
+
+
 
 从第三页开始，每页显示5条记录。这里结果正好是从110id开始的。
 ```
+
+
+
+命名查询
+一个和class并列的一个标签 query标签
+可以把hql语句配置到xml配置文件中
+
+```
+
+<hibernate-mapping package="com.mamh.hibernate.hql.entities">
+
+    <class name="Employee" table="hb_employee">
+        <id name="id" type="java.lang.Integer">
+            <column name="id"/>
+            <generator class="native"/>
+        </id>
+
+        <property name="name" type="java.lang.String">
+            <column name="name"/>
+        </property>
+
+
+        <property name="salary" type="float">
+            <column name="salary"/>
+        </property>
+
+        <property name="email" type="java.lang.String">
+            <column name="email"/>
+        </property>
+
+        <many-to-one name="dept" class="Department">
+            <column name="dept_id"/>
+        </many-to-one>
+
+
+    </class>
+
+
+    <query name="salary">
+        <![
+        CDATA[
+            FROM Employee  e where e.salary > :minSalary and e.salary < :maxSalary
+            ]
+        ]
+        >
+    </query>
+</hibernate-mapping>
+
+```
+
+```
+    @Test
+    public void testHQL3() {
+        Query query = session.getNamedQuery("salary");
+    
+        query.setFloat("minSalary", 5000);
+        query.setFloat("maxSalary", 10000);
+    
+        List list = query.list();
+        System.out.println(list.size());
+    }
+```
+
+投影查询
+查询结果仅包含实体的部分属性
+ ```
+        String hql = "" +
+                "select new Employee (e.id, e.name,e.salary,e.email) " +
+                "from Employee e " +
+                "where e.dept= :dept";
+```
+关键就是这里的hql语句，用的了    Employee 的带参数的一个构造方法
+
+
+
+```
+    @Test
+    public void testHQL4() {
+        String hql = "select e.email,e.salary from Employee e where e.dept= :dept";
+        Query query = session.createQuery(hql);
+
+        Department dept = new Department();
+        dept.setId(80);
+        List<Object []> list = query.setEntity("dept", dept).list();
+
+        for (Object[] o : list) {
+            System.out.println(Arrays.asList(o));
+        }
+
+    }
+```
+
+```
+
+Hibernate: 
+    select
+        employee0_.email as col_0_0_,
+        employee0_.salary as col_1_0_ 
+    from
+        hb_employee employee0_ 
+    where
+        employee0_.dept_id=?
+[JRUSSEL, 14000.0]
+[KPARTNER, 13500.0]
+[AERRAZUR, 12000.0]
+[GCAMBRAU, 11000.0]
+[EZLOTKEY, 10500.0]
+[PTUCKER, 10000.0]
+[DBERNSTE, 9500.0]
+[PHALL, 9000.0]
+[COLSEN, 8000.0]
+[NCAMBRAU, 7500.0]
+[OTUVAULT, 7000.0]
+[JKING, 10000.0]
+[PSULLY, 9500.0]
+[AMCEWEN, 9000.0]
+[LSMITH, 8000.0]
+[LDORAN, 7500.0]
+[SSEWALL, 7000.0]
+[CVISHNEY, 10500.0]
+[DGREENE, 9500.0]
+[MMARVINS, 7200.0]
+[DLEE, 6800.0]
+[SANDE, 6400.0]
+[ABANDA, 6200.0]
+[LOZER, 11500.0]
+[HBLOOM, 10000.0]
+[TFOX, 9600.0]
+[WSMITH, 7400.0]
+[EBATES, 7300.0]
+[SKUMAR, 6100.0]
+[EABEL, 11000.0]
+[AHUTTON, 8800.0]
+[JTAYLOR, 8600.0]
+[JLIVINGS, 8400.0]
+[CJOHNSON, 6200.0]
+
+
+```
+
+
+```
+    @Test
+    public void testHQL4() {
+        String hql = "" +
+                "select new Employee (e.id, e.name,e.salary,e.email) " +
+                "from Employee e " +
+                "where e.dept= :dept";
+        Query query = session.createQuery(hql);
+
+        Department dept = new Department();
+        dept.setId(80);
+        
+        List<Employee> list = query.setEntity("dept", dept).list();
+
+        for (Employee o : list) {
+            System.out.println(o);
+        }
+
+    }
+    
+
+public class Employee {
+    private Integer id;
+    private String name;
+    private float salary;
+    private String email;
+
+
+    private Department dept;
+
+
+    public Employee() {
+    }
+
+    public Employee(Integer id, String name, float salary, String email) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+        this.email = email;
+    }
+```
+
+```
+Hibernate: 
+    select
+        employee0_.id as col_0_0_,
+        employee0_.name as col_1_0_,
+        employee0_.salary as col_2_0_,
+        employee0_.email as col_3_0_ 
+    from
+        hb_employee employee0_ 
+    where
+        employee0_.dept_id=?
+
+Employee{id=145, name='Russell', salary=14000.0, email='JRUSSEL', dept=null}
+
+Employee{id=146, name='Partners', salary=13500.0, email='KPARTNER', dept=null}
+
+Employee{id=147, name='Errazuriz', salary=12000.0, email='AERRAZUR', dept=null}
+
+Employee{id=148, name='Cambrault', salary=11000.0, email='GCAMBRAU', dept=null}
+
+Employee{id=149, name='Zlotkey', salary=10500.0, email='EZLOTKEY', dept=null}
+
+Employee{id=150, name='Tucker', salary=10000.0, email='PTUCKER', dept=null}
+
+Employee{id=151, name='Bernstein', salary=9500.0, email='DBERNSTE', dept=null}
+
+Employee{id=152, name='Hall', salary=9000.0, email='PHALL', dept=null}
+
+Employee{id=153, name='Olsen', salary=8000.0, email='COLSEN', dept=null}
+
+Employee{id=154, name='Cambrault', salary=7500.0, email='NCAMBRAU', dept=null}
+
+Employee{id=155, name='Tuvault', salary=7000.0, email='OTUVAULT', dept=null}
+
+Employee{id=156, name='King', salary=10000.0, email='JKING', dept=null}
+
+Employee{id=157, name='Sully', salary=9500.0, email='PSULLY', dept=null}
+
+Employee{id=158, name='McEwen', salary=9000.0, email='AMCEWEN', dept=null}
+
+Employee{id=159, name='Smith', salary=8000.0, email='LSMITH', dept=null}
+
+Employee{id=160, name='Doran', salary=7500.0, email='LDORAN', dept=null}
+
+Employee{id=161, name='Sewall', salary=7000.0, email='SSEWALL', dept=null}
+
+Employee{id=162, name='Vishney', salary=10500.0, email='CVISHNEY', dept=null}
+
+Employee{id=163, name='Greene', salary=9500.0, email='DGREENE', dept=null}
+
+Employee{id=164, name='Marvins', salary=7200.0, email='MMARVINS', dept=null}
+
+Employee{id=165, name='Lee', salary=6800.0, email='DLEE', dept=null}
+
+Employee{id=166, name='Ande', salary=6400.0, email='SANDE', dept=null}
+
+Employee{id=167, name='Banda', salary=6200.0, email='ABANDA', dept=null}
+
+Employee{id=168, name='Ozer', salary=11500.0, email='LOZER', dept=null}
+
+Employee{id=169, name='Bloom', salary=10000.0, email='HBLOOM', dept=null}
+
+Employee{id=170, name='Fox', salary=9600.0, email='TFOX', dept=null}
+
+Employee{id=171, name='Smith', salary=7400.0, email='WSMITH', dept=null}
+
+Employee{id=172, name='Bates', salary=7300.0, email='EBATES', dept=null}
+
+Employee{id=173, name='Kumar', salary=6100.0, email='SKUMAR', dept=null}
+
+Employee{id=174, name='Abel', salary=11000.0, email='EABEL', dept=null}
+
+Employee{id=175, name='Hutton', salary=8800.0, email='AHUTTON', dept=null}
+
+Employee{id=176, name='Taylor', salary=8600.0, email='JTAYLOR', dept=null}
+
+Employee{id=177, name='Livingston', salary=8400.0, email='JLIVINGS', dept=null}
+
+Employee{id=179, name='Johnson', salary=6200.0, email='CJOHNSON', dept=null}
+
+=destroy=
+
+Process finished with exit code 0
+
+```
+
+
+
+报表查询
+可以使用group by，having，聚集函数等
+```
+    @Test
+    public void testHQLGroupBy() {
+        String hql = "select min(e.salary), max(e.salary) " +
+                "from Employee e " +
+                "group by e.dept " +
+                "having min(salary) > :minSalary";
+        Query query = session.createQuery(hql);
+
+        query.setFloat("minSalary", 8000);
+
+        List<Object[]> list = query.list();
+
+        for (Object[] o : list) {
+            System.out.println(Arrays.asList(o));
+        }
+
+
+    }
+```
+
+```
+Hibernate:
+    select
+        min(employee0_.salary) as col_0_0_,
+        max(employee0_.salary) as col_1_0_
+    from
+        hb_employee employee0_
+    group by
+        employee0_.dept_id 
+    having
+        min(employee0_.salary)>?
+[8300.0, 12000.0]
+[17000.0, 24000.0]
+[10000.0, 10000.0]
+=destroy=
+
+Process finished with exit code 0
+
+```
+----------
+HQL(迫切)左外链接
+
+迫切左外链接：使用left join fetch 关键字
+list()方法返回的集合中存放实体对象引用，每个department对象关联的employee集合都被
+初始化，存放所有关联的employee的实体对象
+查询结果中可能会有重复元素，可以通过hashset来过滤重复元素
+
+左外链接：使用left join 关键字
+list()方法返回的集合中存放的是对象数组类型
+根据配置文件来决定employee结合的检索策略
+如果希望list()方法返回的集合中仅包含department对象，可以在hql查询语句中使用select关键字
+
+
+```
+    @Test
+    public void testHQLLeftJoin(){
+        String hql="from Department d left join fetch d.emps";
+        Query query = session.createQuery(hql);
+
+        List list = query.list();
+        System.out.println(list);
+        System.out.println(list.size());
+
+    }
+```
+```
+Hibernate: 
+    select
+        department0_.id as id0_0_,
+        emps1_.id as id1_1_,
+        department0_.name as name0_0_,
+        emps1_.name as name1_1_,
+        emps1_.salary as salary1_1_,
+        emps1_.email as email1_1_,
+        emps1_.dept_id as dept5_1_1_,
+        emps1_.dept_id as dept5_0_0__,
+        emps1_.id as id0__ 
+    from
+        hb_department department0_ 
+    left outer join
+        hb_employee emps1_ 
+            on department0_.id=emps1_.dept_id
+
+[Department{id='90', name='Executive'}
+, Department{id='90', name='Executive'}
+, Department{id='90', name='Executive'}
+, Department{id='60', name='IT'}
+, Department{id='60', name='IT'}
+, Department{id='60', name='IT'}
+, Department{id='60', name='IT'}
+, Department{id='60', name='IT'}
+, Department{id='100', name='Finance'}
+, Department{id='100', name='Finance'}
+, Department{id='100', name='Finance'}
+, Department{id='100', name='Finance'}
+, Department{id='100', name='Finance'}
+, Department{id='100', name='Finance'}
+, Department{id='30', name='Purchasing'}
+, Department{id='30', name='Purchasing'}
+, Department{id='30', name='Purchasing'}
+, Department{id='30', name='Purchasing'}
+, Department{id='30', name='Purchasing'}
+, Department{id='30', name='Purchasing'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='80', name='Sales'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='50', name='Shipping'}
+, Department{id='10', name='Administration'}
+, Department{id='20', name='Marketing'}
+, Department{id='20', name='Marketing'}
+, Department{id='40', name='Human Resources'}
+, Department{id='70', name='Public Relations'}
+, Department{id='110', name='Accounting'}
+, Department{id='110', name='Accounting'}
+, Department{id='160', name='Benefits'}
+, Department{id='200', name='Operations'}
+, Department{id='230', name='IT Helpdesk'}
+, Department{id='140', name='Control And Credit'}
+, Department{id='130', name='Corporate Tax'}
+, Department{id='240', name='Government Sales'}
+, Department{id='170', name='Manufacturing'}
+, Department{id='210', name='IT Support'}
+, Department{id='180', name='Construction'}
+, Department{id='150', name='Shareholder Services'}
+, Department{id='260', name='Recruiting'}
+, Department{id='220', name='NOC'}
+, Department{id='120', name='Treasury'}
+, Department{id='190', name='Contracting'}
+, Department{id='250', name='Retail Sales'}
+, Department{id='270', name='Payroll'}
+]
+122
+=destroy=
+
+```
+
+上面的hql发现有重复的数据我们来修改一些hql语句
+
+```
+    @Test
+    public void testHQLLeftJoin(){
+        String hql="select distinct d from  Department d left join fetch d.emps";
+        Query query = session.createQuery(hql);
+
+        List list = query.list();
+        System.out.println(list);
+        System.out.println(list.size());
+
+    }
+```
+
+```
+Hibernate: 
+    select
+        distinct department0_.id as id0_0_,
+        emps1_.id as id1_1_,
+        department0_.name as name0_0_,
+        emps1_.name as name1_1_,
+        emps1_.salary as salary1_1_,
+        emps1_.email as email1_1_,
+        emps1_.dept_id as dept5_1_1_,
+        emps1_.dept_id as dept5_0_0__,
+        emps1_.id as id0__ 
+    from
+        hb_department department0_ 
+    left outer join
+        hb_employee emps1_ 
+            on department0_.id=emps1_.dept_id
+[Department{id='90', name='Executive'}
+, Department{id='60', name='IT'}
+, Department{id='100', name='Finance'}
+, Department{id='30', name='Purchasing'}
+, Department{id='50', name='Shipping'}
+, Department{id='80', name='Sales'}
+, Department{id='10', name='Administration'}
+, Department{id='20', name='Marketing'}
+, Department{id='40', name='Human Resources'}
+, Department{id='70', name='Public Relations'}
+, Department{id='110', name='Accounting'}
+, Department{id='160', name='Benefits'}
+, Department{id='200', name='Operations'}
+, Department{id='230', name='IT Helpdesk'}
+, Department{id='140', name='Control And Credit'}
+, Department{id='130', name='Corporate Tax'}
+, Department{id='240', name='Government Sales'}
+, Department{id='170', name='Manufacturing'}
+, Department{id='210', name='IT Support'}
+, Department{id='180', name='Construction'}
+, Department{id='150', name='Shareholder Services'}
+, Department{id='260', name='Recruiting'}
+, Department{id='220', name='NOC'}
+, Department{id='120', name='Treasury'}
+, Department{id='190', name='Contracting'}
+, Department{id='250', name='Retail Sales'}
+, Department{id='270', name='Payroll'}
+]
+27
+=destroy=
+```
+
+另外一种去除重复元素的方法
+把list类型通过hashset过滤一下
+```
+    @Test
+    public void testHQLLeftJoin1() {
+        String hql = "from  Department d left join fetch d.emps";
+        Query query = session.createQuery(hql);
+
+        List list = query.list();
+        System.out.println(new LinkedHashSet(list).size());
+        System.out.println(list.size());
+
+    }
+```
+
+
+
+
+
+----------
+
+
