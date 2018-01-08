@@ -1,6 +1,7 @@
 
 
 Hibernate学习之HQL查询
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 HQL(hibernate query language)是面向对象的查询语言，他和sql查询语言有些相似。
 在hibernate提供的各种检索方式中，hql是使用最广泛的一种检索方式，它具有如下功能：
@@ -15,8 +16,12 @@ HQL(hibernate query language)是面向对象的查询语言，他和sql查询语
 9.能够调用用户定义的sql函数或者标准的sql函数
 
 下面的例子我们采用了oracle数据库
+
 oracle数据库安装在了windows上面。
 
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
+
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 oracle远程访问开启：
 
 解决方法：
@@ -30,6 +35,7 @@ oracle远程访问开启：
 
  在Windows系统下完成Oracle安装后，在其防火墙设置中开放1521端口（Oracle默认的侦听端口）。若客户端仍然无法访问，则需要作进一步的设置，即在注册表“HKEY_LOCAL_MACHINE” - "Software" - “ORACLE” - "HOME"下添加一个注册表项“USE_SHARED_SOCKED”，并将其值设为TRUE，然后重启Oracle服务及Listener服务。
 
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 总结：
  Oracle Telnet 1521失败，要检查以下几点：
@@ -48,15 +54,15 @@ Host is up (0.88s latency).
 Not shown: 987 closed ports
 PORT      STATE SERVICE
 1521/tcp  open  oracle
-
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 Nmap done: 1 IP address (1 host up) scanned in 5.13 seconds
 ```
 
 添加oracle的jdbc驱动文件
 ```
 把从官网下载的oracle的jdbc驱动jar包放到家目录下面执行下面命令：
-$ mvn install:install-file -Dfile=ojdbc8.jar -DgroupId=com.oracle -DartifactId=ojdbc8 -Dversion=12 -Dpackaging=jar                          [mamh@10.0.63.43 ] 17-12-22 15:53  /home/mamh
+$ mvn install:install-file -Dfile=ojdbc8.jar -DgroupId=com.oracle -DartifactId=ojdbc8 -Dversion=12 -Dpackaging=jar
 [INFO] Scanning for projects...
 [INFO]                                                                         
 [INFO] ------------------------------------------------------------------------
@@ -74,7 +80,11 @@ $ mvn install:install-file -Dfile=ojdbc8.jar -DgroupId=com.oracle -DartifactId=o
 [INFO] Finished at: 2017-12-22T15:54:02+08:00
 [INFO] Final Memory: 8M/303M
 [INFO] ------------------------------------------------------------------------
-$ cat /home/mamh/.m2/repository/com/oracle/ojdbc8/12/ojdbc8-12.pom                                                                          [mamh@10.0.63.43 ] 17-12-22 15:54  /home/mamh
+
+
+
+
+$ cat /home/mamh/.m2/repository/com/oracle/ojdbc8/12/ojdbc8-12.pom                                                                          
 <?xml version="1.0" encoding="UTF-8"?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -93,7 +103,7 @@ $ cat /home/mamh/.m2/repository/com/oracle/ojdbc8/12/ojdbc8-12.pom              
 </dependency>
 
 
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 ```
 
 
@@ -102,7 +112,7 @@ $ cat /home/mamh/.m2/repository/com/oracle/ojdbc8/12/ojdbc8-12.pom              
 
 
 这里我们给出一个测试使用的数据库表，包含数据的
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 |EMPLOYEE表格#|EMPLOYEE_ID|FIRST_NAME|LAST_NAME|EMAIL|PHONE_NUMBER|HIRE_DATE|JOB_ID|SALARY|COMMISSION_PCT|MANAGER_ID|DEPARTMENT_ID|
 |-|-|-|-|-|-|-|-|-|-|-|-|
@@ -214,6 +224,7 @@ $ cat /home/mamh/.m2/repository/com/oracle/ojdbc8/12/ojdbc8-12.pom              
 |106|205|Shelley|Higgins|SHIGGINS|515.123.8080|1994-06-07 00:00:00|AC_MGR|12000.00|NULL|101|110|
 |107|206|William|Gietz|WGIETZ|515.123.8181|1994-06-07 00:00:00|AC_ACCOUNT|8300.00|NULL|205|110|
 
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 ----------
 
@@ -252,7 +263,7 @@ $ cat /home/mamh/.m2/repository/com/oracle/ojdbc8/12/ojdbc8-12.pom              
 
 ----------
 
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 ```
 
 SET VERIFY OFF
@@ -2573,13 +2584,13 @@ ALTER TABLE departments
 
 COMMIT;
 
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 ```
 
 第二个表
 
 ```
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 SET FEEDBACK 1
 SET NUMWIDTH 10
@@ -2890,7 +2901,7 @@ COMMIT;
 第三个表
 
 ```
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 ALTER TABLE departments
 DISABLE CONSTRAINT DEPT_MGR_FK;
@@ -2990,12 +3001,15 @@ COMMIT;
 ```
 这里给出几个表直接的关系
 
-![这里写图片描述](http://img.blog.csdn.net/20171229171530298?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbW1oMTk4OTExMTM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
+
+![马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/](http://img.blog.csdn.net/20171229171530298?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbW1oMTk4OTExMTM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 
 
 ----------
 
 
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 hibernate的配置文件。
 ```
@@ -3010,7 +3024,7 @@ hibernate的配置文件。
         <property name="hibernate.connection.password">xxxx</property>
         <property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
         <property name="hibernate.connection.url">jdbc:oracle:thin:@10.0.63.42:1521:orcl</property>
-
+         马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
         <!-- 配置数据库的方言 -->
         <property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property>
         <!--<property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>-->
@@ -3018,7 +3032,7 @@ hibernate的配置文件。
 
         <!--是否打印sql语句-->
         <property name="show_sql">true</property>
-
+         马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
         <!--是否对sql语句格式化-->
         <property name="format_sql">true</property>
 
@@ -3027,7 +3041,7 @@ hibernate的配置文件。
 
         <property name="connection.isolation">2</property>
         <!--<property name="use_identifier_rollback">true</property>-->
-
+        马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
         <!--&lt;!&ndash;C3P0配置 &ndash;&gt;-->
         <!--<property name="hibernate.connection.provider_class">-->
             <!--org.hibernate.service.jdbc.connections.internal.C3P0ConnectionProvider-->
@@ -3039,15 +3053,15 @@ hibernate的配置文件。
         <!--<property name="hibernate.c3p0.idle_test_period">20000</property>-->
         <!--<property name="hibernate.c3p0.max_statements">2</property>-->
 
-
+         马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
         <property name="hibernate.jdbc.fetch_size">100</property>
         <property name="hibernate.jdbc.batch_size">30</property>
 
-
+         马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
         <mapping resource="Department.hbm.xml"/>
         <mapping resource="Employee.hbm.xml"/>
 
-
+         马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
     </session-factory>
 </hibernate-configuration>
 ```
@@ -3060,7 +3074,7 @@ hibernate的配置文件。
 
 
 <hibernate-mapping package="com.mamh.hibernate.hql.entities">
-
+     马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
     <class name="Employee" table="hb_employee">
         <id name="id" type="java.lang.Integer">
             <column name="id"/>
@@ -3084,7 +3098,7 @@ hibernate的配置文件。
             <column name="dept_id"/>
         </many-to-one>
 
-
+       马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
     </class>
 </hibernate-mapping>
 ```
@@ -3095,7 +3109,7 @@ hibernate的配置文件。
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
-
+        马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 <hibernate-mapping package="com.mamh.hibernate.hql.entities">
 
     <class name="Department" table="hb_department">
@@ -3115,13 +3129,15 @@ hibernate的配置文件。
         </set>
     </class>
 </hibernate-mapping>
-
+         马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 ```
+
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 ```
 package com.mamh.hibernate.hql.entities;
 
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 public class Department {
     private String id;
     private String name;
@@ -3163,10 +3179,12 @@ public class Department {
 
 ```
 
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
+
 ```
 package com.mamh.hibernate.hql.entities;
 
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 public class Employee {
     private Integer id;
     private String name;
@@ -3230,11 +3248,15 @@ public class Employee {
 }
 
 ```
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 这2个类都是比较简单的。
 
 
 ----------
+
+
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 ```
 package com.mamh.hibernate.demo;
@@ -3280,16 +3302,15 @@ public class HibernateHqlTest {
 
 }
 
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 
 ```
+
 添加测试hql查询类
+
 ```
-
-
-
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
     @Test
     public void testHQL(){
 
@@ -3309,6 +3330,7 @@ public class HibernateHqlTest {
 
 
 ```
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 ```
 
@@ -3430,14 +3452,15 @@ Hibernate:
 , Employee{id=203, name='Mavris', salary=6500.0, email='SMAVRIS', dept=Department{id='40', name='Human Resources'}}
 , Employee{id=204, name='Baer', salary=10000.0, email='HBAER', dept=Department{id='70', name='Public Relations'}}
 ]
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 =destroy=
 ```
 
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 参数使用命名参数的一种形式
 ```
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
     @Test
     public void testHQL1() {  //参数使用命名参数
         String hql = "from Employee e where e.salary > :sal and e.email like :email";
@@ -3451,10 +3474,11 @@ Hibernate:
         System.out.println(list.size());
     }
 ```
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 还可以使用order by
 ```
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
     @Test
     public void testHQL1() {  //参数使用命名参数
         String hql = "from Employee e where e.salary > :sal and e.email like :email  order by e.salary";
@@ -3468,7 +3492,7 @@ Hibernate:
         System.out.println(list.size());
     }
 
-Hibernate: 
+Hibernate:马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/ 
 
     select
         employee0_.id as id1_,
@@ -3489,6 +3513,8 @@ Hibernate:
 
 使用实体类作为查询条件
 
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
+
 ```
     @Test
     public void testHQL1() {  //参数使用命名参数
@@ -3506,7 +3532,7 @@ Hibernate:
         //System.out.println(list);
         System.out.println(list.size());
     }
-Hibernate: 
+Hibernate:  马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
     select
         employee0_.id as id1_,
         employee0_.name as name1_,
@@ -3527,6 +3553,7 @@ Hibernate:
 =destroy=
 ```
 
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 ----------
 
@@ -3538,6 +3565,7 @@ setFirstResult(int firstResult)设定从哪一个对象开始检索，参数  fi
 
 setMaxResult(int maxResult)设定一次最多检索出的对象数目，在默认情况下，query和criteria接口检索出查询结果中所有的对象
 
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 ```
 
@@ -3559,7 +3587,7 @@ setMaxResult(int maxResult)设定一次最多检索出的对象数目，在默�
 
 
 
-Hibernate: 
+Hibernate: 马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
     select
         * 
     from
@@ -3575,7 +3603,7 @@ Hibernate:
         ) 
     where
         rownum_ > ?
-Hibernate: 
+Hibernate:马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/ 
     select
         department0_.id as id0_0_, department0_.name as name0_0_ 
     from
@@ -3598,7 +3626,7 @@ Hibernate:
 ]
 
 
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 从第三页开始，每页显示5条记录。这里结果正好是从110id开始的。
 ```
 
@@ -3607,6 +3635,8 @@ Hibernate:
 命名查询
 一个和class并列的一个标签 query标签
 可以把hql语句配置到xml配置文件中
+
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 ```
 
@@ -3692,6 +3722,7 @@ Hibernate:
 
     }
 ```
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 ```
 
@@ -3740,7 +3771,7 @@ Hibernate:
 
 
 ```
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 ```
     @Test
@@ -3783,7 +3814,7 @@ public class Employee {
         this.email = email;
     }
 ```
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 ```
 Hibernate: 
     select
@@ -3869,10 +3900,11 @@ Employee{id=179, name='Johnson', salary=6200.0, email='CJOHNSON', dept=null}
 Process finished with exit code 0
 
 ```
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 
 报表查询
+
 可以使用group by，having，聚集函数等
 ```
     @Test
@@ -3894,7 +3926,7 @@ Process finished with exit code 0
 
     }
 ```
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 ```
 Hibernate:
     select
@@ -3917,17 +3949,21 @@ Process finished with exit code 0
 ----------
 HQL(迫切)左外链接
 
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
+
 迫切左外链接：使用left join fetch 关键字
 list()方法返回的集合中存放实体对象引用，每个department对象关联的employee集合都被
 初始化，存放所有关联的employee的实体对象
 查询结果中可能会有重复元素，可以通过hashset来过滤重复元素
+
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 左外链接：使用left join 关键字
 list()方法返回的集合中存放的是对象数组类型
 根据配置文件来决定employee结合的检索策略
 如果希望list()方法返回的集合中仅包含department对象，可以在hql查询语句中使用select关键字
 
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 ```
     @Test
     public void testHQLLeftJoin(){
@@ -3939,7 +3975,8 @@ list()方法返回的集合中存放的是对象数组类型
         System.out.println(list.size());
 
     }
-```
+``` 
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 ```
 Hibernate: 
     select
@@ -4085,8 +4122,9 @@ Hibernate:
 =destroy=
 
 ```
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
-上面的hql发现有重复的数据我们来修改一些hql语句
+上面的hql发现有重复的数据我们来修改一下hql语句
 
 ```
     @Test
@@ -4100,7 +4138,7 @@ Hibernate:
 
     }
 ```
-
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 ```
 Hibernate: 
     select
@@ -4149,6 +4187,7 @@ Hibernate:
 27
 =destroy=
 ```
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
 
 另外一种去除重复元素的方法
 把list类型通过hashset过滤一下
@@ -4165,10 +4204,686 @@ Hibernate:
     }
 ```
 
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
+
+
+左外链接：使用left join 关键字
+list()方法返回的集合中存放的是对象数组类型
+根据配置文件来决定employee结合的检索策略
+如果希望list()方法返回的集合中仅包含department对象，
+可以在hql查询语句中使用select关键字
+
+
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
+```
+    /**
+     * 左外链接：使用left join 关键字
+     * list()方法返回的集合中存放的是对象数组类型
+     * 根据配置文件来决定employee结合的检索策略
+     * 如果希望list()方法返回的集合中仅包含department对象，
+     * 可以在hql查询语句中使用select关键字
+     */
+    @Test
+    public void testHQLLeftJoin2() {
+        String hql = "from  Department d left join d.emps";
+        Query query = session.createQuery(hql);
+
+        List<Object[]> list = query.list();
+        System.out.println(list.size());
+
+        for (Object[] o : list) { //这个出来的是一个数组
+            System.out.println(Arrays.asList(o));
+        }
+        
+        //        System.out.println(list.get(0)[0]);
+        //        System.out.println(list.get(0)[1]);
+
+
+    }
+    
+```
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
+```
+    @Test
+    public void testHQLLeftJoin2() {
+        String hql = "select  distinct  d from  Department d left join d.emps";
+        Query query = session.createQuery(hql);
+
+        List<Department> list = query.list();
+        System.out.println(list.size());
+
+        for (Department department : list) {
+            System.out.println(department);
+            //System.out.println(department.getEmps());  这里关联department的employee没有被初始化
+        }
+
+    }
+```
+
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
+
+----------
+HQL (迫切)内连接
+
+迫切内连接：    不返回左表不满足条件的记录
+inner join fetch关键字表示迫切内连接，也可以省略inner关键字
+list()方法返回的集合中存放department对象的引用，每个department对象的employee集合都被初始化
+存放所有关联的employee对象
+
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
+
+内连接：
+inner join关键字表示内连接，也可以省略inner关键字
+list()方法的集合中存放的每个元素对应查询结果的一条记录，每个元素都是对象数组类型
+如果希望list()方法返回的集合仅包含department对象，可以在HQL查询语句中使用select关键字
+
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
+
+```
+    /**
+     * 迫切内连接：
+     * inner join fetch关键字表示迫切内连接，也可以省略inner关键字
+     * list()方法返回的集合中存放department对象的引用，每个department对象的employee集合都被初始化
+     * 存放所有关联的employee对象
+     * <p>
+     * 不返回左表不满足条件的记录
+     */
+    @Test
+    public void testHQLInnerJoin() {
+        String hql = "select  distinct d from  Department d inner join fetch d.emps";
+        //  String hql = " from  Department d inner join fetch d.emps";
+        Query query = session.createQuery(hql);
+
+        List list = query.list();
+        System.out.println(list.size());
+
+    }
+```
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
+```
+Hibernate: 
+    select
+        distinct department0_.id as id0_0_,
+        emps1_.id as id1_1_,
+        department0_.name as name0_0_,
+        emps1_.name as name1_1_,
+        emps1_.salary as salary1_1_,
+        emps1_.email as email1_1_,
+        emps1_.dept_id as dept5_1_1_,
+        emps1_.dept_id as dept5_0_0__,
+        emps1_.id as id0__ 
+    from
+        hb_department department0_ 
+    inner join
+        hb_employee emps1_ 
+            on department0_.id=emps1_.dept_id
+11
+=destroy=
+```
+
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
+
+这里反过来，查询employee，先使用 left join fetch
+```
+    @Test
+    public void testHQLJoin() {
+        String hql = "select e from  Employee e left join fetch e.dept";
+        Query query = session.createQuery(hql);
+
+        List<Employee> list = query.list();
+        System.out.println(list.size());
+
+        for (Employee employee : list) {
+            System.out.println(employee.getName() + ", " + employee.getDept().getName());
+            //System.out.println(employee);
+        }
+
+    }
+
+```
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
+```
+Hibernate: 
+    select
+        employee0_.id as id1_0_,
+        department1_.id as id0_1_,
+        employee0_.name as name1_0_,
+        employee0_.salary as salary1_0_,
+        employee0_.email as email1_0_,
+        employee0_.dept_id as dept5_1_0_,
+        department1_.name as name0_1_ 
+    from
+        hb_employee employee0_ 
+    left outer join
+        hb_department department1_ 
+            on employee0_.dept_id=department1_.id
+107
+Whalen, Administration
+Hartstein, Marketing
+Fay, Marketing
+Raphaely, Purchasing
+Khoo, Purchasing
+Baida, Purchasing
+Tobias, Purchasing
+Himuro, Purchasing
+Colmenares, Purchasing
+Mavris, Human Resources
+Weiss, Shipping
+Fripp, Shipping
+Kaufling, Shipping
+Vollman, Shipping
+Mourgos, Shipping
+Nayer, Shipping
+Mikkilineni, Shipping
+Landry, Shipping
+Markle, Shipping
+Bissot, Shipping
+Atkinson, Shipping
+Marlow, Shipping
+Olson, Shipping
+Mallin, Shipping
+Rogers, Shipping
+Gee, Shipping
+Philtanker, Shipping
+Ladwig, Shipping
+Stiles, Shipping
+Seo, Shipping
+Patel, Shipping
+Rajs, Shipping
+Davies, Shipping
+Matos, Shipping
+Vargas, Shipping
+Taylor, Shipping
+Fleaur, Shipping
+Sullivan, Shipping
+Geoni, Shipping
+Sarchand, Shipping
+Bull, Shipping
+Dellinger, Shipping
+Cabrio, Shipping
+Chung, Shipping
+Dilly, Shipping
+Gates, Shipping
+Perkins, Shipping
+Bell, Shipping
+Everett, Shipping
+McCain, Shipping
+Jones, Shipping
+Walsh, Shipping
+Feeney, Shipping
+OConnell, Shipping
+Grant, Shipping
+Hunold, IT
+Ernst, IT
+Austin, IT
+Pataballa, IT
+Lorentz, IT
+Baer, Public Relations
+Russell, Sales
+Partners, Sales
+Errazuriz, Sales
+Cambrault, Sales
+Zlotkey, Sales
+Tucker, Sales
+Bernstein, Sales
+Hall, Sales
+Olsen, Sales
+Cambrault, Sales
+Tuvault, Sales
+King, Sales
+Sully, Sales
+McEwen, Sales
+Smith, Sales
+Doran, Sales
+Sewall, Sales
+Vishney, Sales
+Greene, Sales
+Marvins, Sales
+Lee, Sales
+Ande, Sales
+Banda, Sales
+Ozer, Sales
+Bloom, Sales
+Fox, Sales
+Smith, Sales
+Bates, Sales
+Kumar, Sales
+Abel, Sales
+Hutton, Sales
+Taylor, Sales
+Livingston, Sales
+Johnson, Sales
+King, Executive
+Kochhar, Executive
+De Haan, Executive
+Greenberg, Finance
+Faviet, Finance
+Chen, Finance
+Sciarra, Finance
+Urman, Finance
+Popp, Finance
+Higgins, Accounting
+Gietz, Accounting
+=destroy=
+
+java.lang.NullPointerException
+	at com.mamh.hibernate.demo.HibernateHqlTest.testHQLJoin(HibernateHqlTest.java:261)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at org.junit.runner.JUnitCore.run(JUnitCore.java:137)
+	at com.intellij.junit4.JUnit4IdeaTestRunner.startRunnerWithArgs(JUnit4IdeaTestRunner.java:68)
+	at com.intellij.rt.execution.junit.IdeaTestRunner$Repeater.startRunnerWithArgs(IdeaTestRunner.java:47)
+	at com.intellij.rt.execution.junit.JUnitStarter.prepareStreamsAndStart(JUnitStarter.java:242)
+	at com.intellij.rt.execution.junit.JUnitStarter.main(JUnitStarter.java:70)
+
+这个情况 使用 left join fetch 会出个异常，因为有的人没有部门，就是department是null。
+下面改为inner就不会报错了
+
+```
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
+下面改为inner就不会报错了
+```
+    @Test
+    public void testHQLJoin() {
+        String hql = "select e from  Employee e inner join fetch e.dept";
+        Query query = session.createQuery(hql);
+
+        List<Employee> list = query.list();
+        System.out.println(list.size());
+
+        for (Employee employee : list) {
+            System.out.println(employee.getName() + ", " + employee.getDept().getName());
+        }
+
+    }
+```
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
+```
+Hibernate: 
+    select
+        employee0_.id as id1_0_,
+        department1_.id as id0_1_,
+        employee0_.name as name1_0_,
+        employee0_.salary as salary1_0_,
+        employee0_.email as email1_0_,
+        employee0_.dept_id as dept5_1_0_,
+        department1_.name as name0_1_ 
+    from
+        hb_employee employee0_ 
+    inner join
+        hb_department department1_ 
+            on employee0_.dept_id=department1_.id
+106
+King, Executive
+Kochhar, Executive
+De Haan, Executive
+Hunold, IT
+Ernst, IT
+Austin, IT
+Pataballa, IT
+Lorentz, IT
+Greenberg, Finance
+Faviet, Finance
+Chen, Finance
+Sciarra, Finance
+Urman, Finance
+Popp, Finance
+Raphaely, Purchasing
+Khoo, Purchasing
+Baida, Purchasing
+Tobias, Purchasing
+Himuro, Purchasing
+Colmenares, Purchasing
+Weiss, Shipping
+Fripp, Shipping
+Kaufling, Shipping
+Vollman, Shipping
+Mourgos, Shipping
+Nayer, Shipping
+Mikkilineni, Shipping
+Landry, Shipping
+Markle, Shipping
+Bissot, Shipping
+Atkinson, Shipping
+Marlow, Shipping
+Olson, Shipping
+Mallin, Shipping
+Rogers, Shipping
+Gee, Shipping
+Philtanker, Shipping
+Ladwig, Shipping
+Stiles, Shipping
+Seo, Shipping
+Patel, Shipping
+Rajs, Shipping
+Davies, Shipping
+Matos, Shipping
+Vargas, Shipping
+Russell, Sales
+Partners, Sales
+Errazuriz, Sales
+Cambrault, Sales
+Zlotkey, Sales
+Tucker, Sales
+Bernstein, Sales
+Hall, Sales
+Olsen, Sales
+Cambrault, Sales
+Tuvault, Sales
+King, Sales
+Sully, Sales
+McEwen, Sales
+Smith, Sales
+Doran, Sales
+Sewall, Sales
+Vishney, Sales
+Greene, Sales
+Marvins, Sales
+Lee, Sales
+Ande, Sales
+Banda, Sales
+Ozer, Sales
+Bloom, Sales
+Fox, Sales
+Smith, Sales
+Bates, Sales
+Kumar, Sales
+Abel, Sales
+Hutton, Sales
+Taylor, Sales
+Livingston, Sales
+Johnson, Sales
+Taylor, Shipping
+Fleaur, Shipping
+Sullivan, Shipping
+Geoni, Shipping
+Sarchand, Shipping
+Bull, Shipping
+Dellinger, Shipping
+Cabrio, Shipping
+Chung, Shipping
+Dilly, Shipping
+Gates, Shipping
+Perkins, Shipping
+Bell, Shipping
+Everett, Shipping
+McCain, Shipping
+Jones, Shipping
+Walsh, Shipping
+Feeney, Shipping
+OConnell, Shipping
+Grant, Shipping
+Whalen, Administration
+Hartstein, Marketing
+Fay, Marketing
+Mavris, Human Resources
+Baer, Public Relations
+Higgins, Accounting
+Gietz, Accounting
+=destroy=
+
+Process finished with exit code 0
+
+```
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
+如果使用inner join呢？就是不加fetch情况。是不会初始化集合的，
+```
+    @Test
+    public void testHQLJoin() {
+        String hql = "select e from  Employee e inner join  e.dept";
+        Query query = session.createQuery(hql);
+
+        List<Employee> list = query.list();
+        System.out.println(list.size());
+
+        for (Employee employee : list) {
+            System.out.println(employee.getName() + ", " + employee.getDept().getName());
+        }
+
+    }
+```
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
+```
+
+Hibernate: 
+    select
+        employee0_.id as id1_,
+        employee0_.name as name1_,
+        employee0_.salary as salary1_,
+        employee0_.email as email1_,
+        employee0_.dept_id as dept5_1_ 
+    from
+        hb_employee employee0_ 
+    inner join
+        hb_department department1_ 
+            on employee0_.dept_id=department1_.id
+106
+Hibernate: 
+    select
+        department0_.id as id0_0_,
+        department0_.name as name0_0_ 
+    from
+        hb_department department0_ 
+    where
+        department0_.id=?
+King, Executive
+Kochhar, Executive
+De Haan, Executive
+Hibernate: 
+    select
+        department0_.id as id0_0_,
+        department0_.name as name0_0_ 
+    from
+        hb_department department0_ 
+    where
+        department0_.id=?
+Hunold, IT
+Ernst, IT
+Austin, IT
+Pataballa, IT
+Lorentz, IT
+Hibernate: 
+    select
+        department0_.id as id0_0_,
+        department0_.name as name0_0_ 
+    from
+        hb_department department0_ 
+    where
+        department0_.id=?
+Greenberg, Finance
+Faviet, Finance
+Chen, Finance
+Sciarra, Finance
+Urman, Finance
+Popp, Finance
+Hibernate: 
+    select
+        department0_.id as id0_0_,
+        department0_.name as name0_0_ 
+    from
+        hb_department department0_ 
+    where
+        department0_.id=?
+Raphaely, Purchasing
+Khoo, Purchasing
+Baida, Purchasing
+Tobias, Purchasing
+Himuro, Purchasing
+Colmenares, Purchasing
+Hibernate: 
+    select
+        department0_.id as id0_0_,
+        department0_.name as name0_0_ 
+    from
+        hb_department department0_ 
+    where
+        department0_.id=?
+Weiss, Shipping
+Fripp, Shipping
+Kaufling, Shipping
+Vollman, Shipping
+Mourgos, Shipping
+Nayer, Shipping
+Mikkilineni, Shipping
+Landry, Shipping
+Markle, Shipping
+Bissot, Shipping
+Atkinson, Shipping
+Marlow, Shipping
+Olson, Shipping
+Mallin, Shipping
+Rogers, Shipping
+Gee, Shipping
+Philtanker, Shipping
+Ladwig, Shipping
+Stiles, Shipping
+Seo, Shipping
+Patel, Shipping
+Rajs, Shipping
+Davies, Shipping
+Matos, Shipping
+Vargas, Shipping
+Hibernate: 
+    select
+        department0_.id as id0_0_,
+        department0_.name as name0_0_ 
+    from
+        hb_department department0_ 
+    where
+        department0_.id=?
+Russell, Sales
+Partners, Sales
+Errazuriz, Sales
+Cambrault, Sales
+Zlotkey, Sales
+Tucker, Sales
+Bernstein, Sales
+Hall, Sales
+Olsen, Sales
+Cambrault, Sales
+Tuvault, Sales
+King, Sales
+Sully, Sales
+McEwen, Sales
+Smith, Sales
+Doran, Sales
+Sewall, Sales
+Vishney, Sales
+Greene, Sales
+Marvins, Sales
+Lee, Sales
+Ande, Sales
+Banda, Sales
+Ozer, Sales
+Bloom, Sales
+Fox, Sales
+Smith, Sales
+Bates, Sales
+Kumar, Sales
+Abel, Sales
+Hutton, Sales
+Taylor, Sales
+Livingston, Sales
+Johnson, Sales
+Taylor, Shipping
+Fleaur, Shipping
+Sullivan, Shipping
+Geoni, Shipping
+Sarchand, Shipping
+Bull, Shipping
+Dellinger, Shipping
+Cabrio, Shipping
+Chung, Shipping
+Dilly, Shipping
+Gates, Shipping
+Perkins, Shipping
+Bell, Shipping
+Everett, Shipping
+McCain, Shipping
+Jones, Shipping
+Walsh, Shipping
+Feeney, Shipping
+OConnell, Shipping
+Grant, Shipping
+Hibernate: 
+    select
+        department0_.id as id0_0_,
+        department0_.name as name0_0_ 
+    from
+        hb_department department0_ 
+    where
+        department0_.id=?
+Whalen, Administration
+Hibernate: 
+    select
+        department0_.id as id0_0_,
+        department0_.name as name0_0_ 
+    from
+        hb_department department0_ 
+    where
+        department0_.id=?
+Hartstein, Marketing
+Fay, Marketing
+Hibernate: 
+    select
+        department0_.id as id0_0_,
+        department0_.name as name0_0_ 
+    from
+        hb_department department0_ 
+    where
+        department0_.id=?
+Mavris, Human Resources
+Hibernate: 
+    select
+        department0_.id as id0_0_,
+        department0_.name as name0_0_ 
+    from
+        hb_department department0_ 
+    where
+        department0_.id=?
+Baer, Public Relations
+Hibernate: 
+    select
+        department0_.id as id0_0_,
+        department0_.name as name0_0_ 
+    from
+        hb_department department0_ 
+    where
+        department0_.id=?
+Higgins, Accounting
+Gietz, Accounting
+=destroy=
+
+我们可以看到 其中连续打印，并且还有查询department的操作。还能发现如果查过某个department的话下面一条就不会重复查询。
+```
+马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/
+
 
 
 
 
 ----------
+
+
+
+
+
 
 
