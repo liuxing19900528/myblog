@@ -3006,6 +3006,33 @@ COMMIT;
 ![马哥私房菜 淘宝店铺 https://shop592330910.taobao.com/](http://img.blog.csdn.net/20171229171530298?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbW1oMTk4OTExMTM=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
 
 
+
+数据库表的导入？
+使用sql developer，
+
+执行 @D:/del_data.sql
+执行 @D:/hr_cre.sql
+执行 @D:/hr_popul.sql
+这样就把sql文件导入到数据库里面了。
+
+我们执行我们的项目，让其自动的再创建2长表，一个是hb_department, 另一个是hb_employee, 这个是在hbm配置文件里面定义的表格名的。
+
+接下来我们把刚刚导入的sql文件中有一个departments表的数据 导入到这个hb_department表,
+
+```sql
+sql> INSERT  INTO  hb_department SELECT DEPARTMENT_ID,DEPARTMENT_NAME from DEPARTMENTS
+[2018-01-15 16:32:52] 27 rows affected in 37ms
+```
+
+
+然后通用的操作包employees表格中的数据导入到hb_employee表，
+
+```sql
+sql> INSERT  INTO  HB_EMPLOYEE SELECT  EMPLOYEE_ID,LAST_NAME,SALARY,EMAIL,DEPARTMENT_ID FROM EMPLOYEES
+[2018-01-15 16:34:36] 107 rows affected in 10ms
+```
+
+
 ----------
 
 
