@@ -1,0 +1,180 @@
+数据库学习oracle之过滤和排序.md
+
+#在查询中过滤行
+
+
+```sql
+
+SELECT EMPLOYEE_ID,LAST_NAME from EMPLOYEES;
+
+
+```
+使用where来过滤，添加查询条件
+```sql
+
+SELECT EMPLOYEE_ID,LAST_NAME,SALARY 
+from EMPLOYEES
+WHERE EMPLOYEE_ID > 200
+
+```
+
+```sql
+
+SELECT EMPLOYEE_ID,LAST_NAME,SALARY 
+from EMPLOYEES
+WHERE SALARY > 5000
+
+```
+```sql
+
+SELECT EMPLOYEE_ID,LAST_NAME,SALARY 
+from EMPLOYEES
+WHERE DEPARTMENT_ID > 90
+
+```
+
+字符和日期只能包含在单引号里面。
+```sql
+SELECT *
+FROM EMPLOYEES
+WHERE  to_char(HIRE_DATE,'yyyy-mm-dd')='1994-06-07';
+```
+
+比较运算符使用的是 “=” 而不是“==”
+
+
+between ...   and ....
+```sql
+
+SELECT *
+FROM EMPLOYEES
+WHERE  SALARY>=4000 and SALARY<7000;
+
+SELECT *
+FROM EMPLOYEES
+WHERE SALARY BETWEEN 4000 and 7000;
+
+
+
+```
+
+
+where ...  in ....
+```sql
+
+SELECT LAST_NAME,DEPARTMENT_ID
+FROM EMPLOYEES
+WHERE DEPARTMENT_ID =90 or DEPARTMENT_ID = 70 OR DEPARTMENT_ID = 80;
+
+SELECT LAST_NAME,DEPARTMENT_ID
+FROM EMPLOYEES
+WHERE DEPARTMENT_ID in (70,80,90);
+
+```
+
+where ... like ....   模糊查询
+```sql
+
+
+SELECT LAST_NAME,DEPARTMENT_ID,SALARY
+  FROM EMPLOYEES
+WHERE LAST_NAME LIKE '%a%';
+
+
+
+```
+
+% 表示匹配多个
+_ 下划线表示匹配一个
+
+怎么转义一个字符，escape后面的字符可以自定义的。
+
+```sql
+
+
+SELECT LAST_NAME,DEPARTMENT_ID,SALARY
+  FROM EMPLOYEES
+WHERE LAST_NAME LIKE '%\_%' ESCAPE '\';
+
+```
+
+where ... is  null
+```sql
+
+SELECT *
+  FROM EMPLOYEES
+WHERE COMMISSION_PCT is NULL ;
+
+```
+
+where ... is not null
+
+```sql
+
+SELECT *
+  FROM EMPLOYEES
+WHERE COMMISSION_PCT is NOT NULL ;
+
+```
+
+
+
+
+
+
+#在查询中进行排序
+
+
+order by
+
+--从小到大排序(默认)
+```sql
+
+SELECT LAST_NAME,SALARY,DEPARTMENT_ID
+  FROM EMPLOYEES
+WHERE DEPARTMENT_ID=80 ORDER BY SALARY; 
+
+SELECT LAST_NAME,SALARY,DEPARTMENT_ID
+  FROM EMPLOYEES
+WHERE DEPARTMENT_ID=80 ORDER BY SALARY ASC ; 
+```
+
+使用desc 从大到小排序
+```sql
+
+SELECT LAST_NAME,SALARY,DEPARTMENT_ID
+  FROM EMPLOYEES
+WHERE DEPARTMENT_ID=80 ORDER BY SALARY DESC ;
+
+```
+
+```sql
+
+SELECT LAST_NAME,SALARY,DEPARTMENT_ID
+FROM EMPLOYEES
+ORDER BY SALARY DESC, DEPARTMENT_ID ASC 
+
+```
+
+多个列排序
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
